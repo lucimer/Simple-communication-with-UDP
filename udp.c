@@ -49,7 +49,7 @@ int UDP_Init()
 
 //*******************************************************************************
 //* 函数名: Read_Data()
-//* 功能:   读取数据线程，读取多道传来的数据
+//* 功能:   读取数据线程
 //* 返回值: 
 //*******************************************************************************
 void *Read_Data(void *arg)
@@ -134,25 +134,7 @@ static int UDP_Read_Data()
 		printf("%02x  ",data[i]);
 	}
 	
-	printf("\n\n");
-	//读完数据去解析
-	  //先算出活时间
-	
-	slowCounts = EXTRACT_SLOW_COUNTS_CMD[1] << 24 &  0xff000000;
-	slowCounts += EXTRACT_SLOW_COUNTS_CMD[2] << 16 & 0x00ff0000;
-	slowCounts += EXTRACT_SLOW_COUNTS_CMD[3] << 8 &  0x0000ff00;
-	slowCounts += EXTRACT_SLOW_COUNTS_CMD[4] << 0 &  0x000000ff;
-	
-	inputCounts = EXTRACT_INPUT_COUNTS_CMD[1] << 24 &  0xff000000;
-	inputCounts += EXTRACT_INPUT_COUNTS_CMD[2] << 16 & 0x00ff0000;
-	inputCounts += EXTRACT_INPUT_COUNTS_CMD[3] << 8 &  0x0000ff00;
-	inputCounts += EXTRACT_INPUT_COUNTS_CMD[4] << 0 &  0x000000ff;
-	
-	printf("slowCounts:%x   inputCounts:%x   liveTime:%f\n",slowCounts,inputCounts,liveTime);
-	liveTime = (float)realTime * (float)slowCounts / (float)inputCounts;
-	printf("slowCounts:%x   inputCounts:%x   liveTime:%f\n",slowCounts,inputCounts,liveTime);
-	
-	//Analy_Data(data,XMA_Channel_num,liveTime);
+	Analy_Data(data,XMA_Channel_num,liveTime);
 
 
 	//数据解析完释放内存
